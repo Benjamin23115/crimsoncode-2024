@@ -8,7 +8,7 @@
 		<h2 class="h2">Welcome to Tuff2DBug</h2>
 		<FileDropzone name="files" input[type="file" ] bind:files>
 			<svelte:fragment slot="lead"
-				><span class="material-symbols-outlined icon"> upload_file </span></svelte:fragment
+				><span class="material-symbols-outlined"> upload_file </span></svelte:fragment
 			>
 			<svelte:fragment slot="message">Upload a File or drag and drop</svelte:fragment>
 			<svelte:fragment slot="meta">PDF only</svelte:fragment>
@@ -35,8 +35,5 @@
 		50% {
 			transform: scale(1.5);
 		}
-	}
-	.icon {
-		font-size: 2rem;
 	}
 </style>
