@@ -1,6 +1,7 @@
 import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
 	plugins: [
@@ -16,4 +17,5 @@ export default defineConfig({
 		port: 3000,
 		open: true
 	},
+	publicDir: path.resolve('./public')
 });
