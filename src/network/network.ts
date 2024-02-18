@@ -1,23 +1,23 @@
-export const sendPdf = (pdfFile: any) => {
-	const formData = new FormData();
+export const sendPdf = async (pdfFile: File): Promise<void> => {
+	let formData = new FormData();
 	formData.append('file', pdfFile);
+	console.log('temp', formData);
 
 	// const url = import.meta.env.VITE_URL; // Replace with your server endpoint
-	const url = 'http://localhost:5000/submit'; // Replace with your server endpoint
+	const url = 'http://localhost:5001/submit'; // Replace with your server endpoint
 
-	fetch(url, {
-		method: 'POST',
-		body: formData
-	})
-		.then((response) => {
-			console.log(response);
-		})
-		.catch((error) => {
-			console.error('Error with sending Pdf: ', error);
+	try {
+		const response = await fetch(url, {
+			method: 'POST',
+			body: formData
 		});
+		console.log(response);
+	} catch (error) {
+		console.error('Error with sending Pdf: ', error);
+	}
 };
 
-export async function pingUrl(url: any) {
+export async function pingUrl(url: string): Promise<void> {
 	const startTime = performance.now();
 	try {
 		const response = await fetch(url);

@@ -8,30 +8,27 @@
 
 	let invalidFileInput: boolean = false;
 	let validFileInput: boolean = false;
-	let validAlertCheck: boolean = false;
 	let fileExtensionCheck: boolean = false;
+	let pdfHasBeenSent: boolean = false;
 	let fileAsUInt8Array: Uint8Array;
 	let files: FileList;
+	let inputFileAsFile: File;
 
 	const onChangeHandler = async (e: Event) => {
-		fileExtensionCheck = files[0].name.endsWith('.pdf');
+		let file = files[0];
+		fileExtensionCheck = file.name.endsWith('.pdf');
 		if (fileExtensionCheck) {
 			validFileInput = true;
 			setTimeout(() => {
 				validFileInput = false;
 			}, ALERT_WAIT_TIME);
-			if (files[0]) {
-				sendPdf(files[0]);
-				// try {
-				// 	fileAsUInt8Array = await readFileAsUint8Array(files[0]);
-				// 	validAlertCheck = true;
-				// } catch (error) {
-				// 	console.error('Error reading file:', error);
-				// 	invalidFileInput = true;
-				// 	setTimeout(() => {
-				// 		invalidFileInput = false;
-				// 	}, ALERT_WAIT_TIME);
-				// }
+			if (file) {
+				fileAsUInt8Array = await readFileAsUint8Array(files[0]);
+				const blob = new Blob([fileAsUInt8Array]);
+				inputFileAsFile = new File([blob], file.name, { lastModified: file.lastModified });
+				console.log('temp', inputFileAsFile);
+				sendPdf(inputFileAsFile);
+				pdfHasBeenSent = true;
 			} else {
 				invalidFileInput = true;
 				setTimeout(() => {
@@ -67,9 +64,13 @@
 			icon={'done'}
 		/>
 	{/if}
-	<!-- {#if !validFileInput && validAlertCheck}
-		<PdfViewer pdf={fileAsUInt8Array} />
-	{/if} -->
+	{#if !validFileInput && pdfHasBeenSent}
+		<audio controls>
+			<!-- add wav src file here -->
+			<source src="example.wav" type="audio/wav" />
+			Your browser does not support the audio element.
+		</audio>
+	{/if}
 </div>
 
 <style lang="postcss">
