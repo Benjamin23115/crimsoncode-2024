@@ -19,10 +19,7 @@
 	};
 </script>
 
-<div class="container h-full mx-auto flex justify-center items-center flex-col gap-16">
-	{#if invalidFileInput}
-		<Alert />
-	{/if}
+<div class="container h-full mx-auto flex justify-center items-center flex-col gap-8">
 	<div class="space-y-10 text-center flex flex-col items-center">
 		<h2 class="h2">Welcome to Tuff2DBug</h2>
 		<FileDropzone name="files" bind:files on:change={onChangeHandler} rounded="rounded">
@@ -35,26 +32,10 @@
 			<svelte:fragment slot="meta">PDF only</svelte:fragment>
 		</FileDropzone>
 	</div>
+	{#if invalidFileInput}
+		<Alert />
+	{/if}
 </div>
 
 <style lang="postcss">
-	@keyframes glow {
-		0% {
-			@apply bg-primary-400/50;
-		}
-		33% {
-			@apply bg-secondary-400/50;
-		}
-		66% {
-			@apply bg-tertiary-400/50;
-		}
-		100% {
-			@apply bg-primary-400/50;
-		}
-	}
-	@keyframes pulse {
-		50% {
-			transform: scale(1.5);
-		}
-	}
 </style>

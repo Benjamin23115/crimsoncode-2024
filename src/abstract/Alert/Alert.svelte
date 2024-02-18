@@ -4,7 +4,7 @@
 	export let border = 'rounded';
 </script>
 
-<aside class={`alert ${variant} ${border}`} transition:fade|local={{ duration: 500 }}>
+<aside class={`alert ${variant} ${border} w-4/12`} transition:fade|local={{ duration: 500 }}>
 	<span class="material-symbols-outlined">error</span>
 	<div class="alert-message">
 		<h3 class="h3">Wrong File Type</h3>
