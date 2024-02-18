@@ -19,19 +19,14 @@
 
 		try {
 			const pdfDoc = await PDFDocument.load(pdf);
-			const page = await pdfDoc.getPage(0);
-			const { width, height } = page.getSize();
-
-			// Set the canvas dimensions
-			canvas.width = width;
-			canvas.height = height;
+			const page = pdfDoc.getPage(0);
 
 			// Render the PDF page onto the canvas
 			const renderContext = {
 				canvasContext: ctx!,
-				viewport: page.viewport // Use the existing viewport property
+				viewport: page.viewport
 			};
-			await page.render(renderContext).promise;
+			await page.draw(renderContext).promise;
 		} catch (error) {
 			console.error('Error rendering PDF:', error);
 		}
