@@ -4,7 +4,7 @@ export const sendPdf = async (pdfFile: File): Promise<void> => {
 	console.log('temp', formData);
 
 	// const url = import.meta.env.VITE_URL; // Replace with your server endpoint
-	const url = 'http://localhost:5001/submit'; // Replace with your server endpoint
+	const url = 'http://localhost:5000/submit'; // Replace with your server endpoint
 
 	try {
 		const response = await fetch(url, {

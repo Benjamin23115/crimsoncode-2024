@@ -37,7 +37,7 @@
 			}
 		}
 	};
-	$: pingUrl('http://localhost:5000/submit');
+	$: pingUrl('http://localhost:5000/');
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center flex-col gap-8">
@@ -67,7 +67,7 @@
 	{#if !validFileInput && pdfHasBeenSent}
 		<audio controls>
 			<!-- add wav src file here -->
-			<source src="example.wav" type="audio/wav" />
+			<source src={audioBlob} type="audio/wav" />
 			Your browser does not support the audio element.
 		</audio>
 	{/if}
