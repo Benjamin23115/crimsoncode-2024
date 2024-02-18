@@ -30,12 +30,12 @@
 				inputFileAsFile = new File([blob], file.name, { lastModified: file.lastModified });
 				sendPdf(inputFileAsFile);
 				pdfHasBeenSent = true;
-			} else {
-				invalidFileInput = true;
-				setTimeout(() => {
-					invalidFileInput = false;
-				}, ALERT_WAIT_TIME);
 			}
+		} else {
+			invalidFileInput = true;
+			setTimeout(() => {
+				invalidFileInput = false;
+			}, ALERT_WAIT_TIME);
 		}
 	};
 </script>
