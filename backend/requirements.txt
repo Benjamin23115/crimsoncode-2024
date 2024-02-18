@@ -1,0 +1,9 @@
+websockets
+pytesseract
+flask[async]
+opencv-python
+pdf2image
+python-poppler
+pillow
+asyncio
+langchain
