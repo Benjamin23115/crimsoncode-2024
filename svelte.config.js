@@ -19,7 +19,8 @@ const config = {
 		},
 		alias: {
 			constants: 'src/constants',
-			routes: 'src/routes'
+			routes: 'src/routes',
+			abstract: 'src/abstract'
 		}
 	}
 };
