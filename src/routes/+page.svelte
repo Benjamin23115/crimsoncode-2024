@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import Alert from 'abstract/Alert/Alert.svelte';
+	import PdfViewer from "routes/PdfViewer/PdfViewer.svelte"
 	import { ALERT_WAIT_TIME } from 'constants/constants';
 
 	let invalidFileInput: boolean = false;

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
-const source = path.join('./node_modules/@pdftron/pdfjs-express/public/');
+const source = path.join('./node_modules/@pdftron/pdfjs-express-viewer/public/');
 const destination = path.join('./src/pdf-js'); // Adjust if needed
 
 async function copyFiles() {
