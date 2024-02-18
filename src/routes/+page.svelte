@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import Alert from 'abstract/Alert/Alert.svelte';
-	import PdfViewer from 'routes/PdfViewer.svelte';
 	import { ALERT_WAIT_TIME, APPLICATION_NAME } from 'constants/constants';
 	import { readFileAsUint8Array } from 'models/models';
 	import { sendPdf, pingUrl } from 'network/network';
