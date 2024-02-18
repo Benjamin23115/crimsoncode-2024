@@ -2,19 +2,27 @@
 	import { createEventDispatcher } from 'svelte';
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import Alert from 'abstract/Alert/Alert.svelte';
-	const dispatch = createEventDispatcher();
+	import { ALERT_WAIT_TIME } from 'constants/constants';
 
-	export let invalidFileInput: boolean;
+	let invalidFileInput: boolean = false;
+	let validFileInput: boolean = false;
 
 	let files: FileList;
 	let fileExtensionCheck: boolean;
 
 	const onChangeHandler = (e: Event) => {
-		fileExtensionCheck = files[0].name.endsWith('pdf');
+		fileExtensionCheck = files[0].name.endsWith('.pdf');
 		if (fileExtensionCheck) {
+			validFileInput = true;
+			setTimeout(() => {
+				validFileInput = false;
+			}, ALERT_WAIT_TIME);
 			// send pdf file to OCR
 		} else {
-			dispatch('wrongFileInput');
+			invalidFileInput = true;
+			setTimeout(() => {
+				invalidFileInput = false;
+			}, ALERT_WAIT_TIME);
 		}
 	};
 </script>
@@ -34,6 +42,14 @@
 	</div>
 	{#if invalidFileInput}
 		<Alert />
+	{/if}
+	{#if validFileInput}
+		<Alert
+			title={'Success'}
+			description={'The uploaded file is now being processed'}
+			variant={'variant-filled-success'}
+			icon={'done'}
+		/>
 	{/if}
 </div>
 
