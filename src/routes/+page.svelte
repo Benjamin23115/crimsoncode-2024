@@ -2,7 +2,6 @@
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import Alert from 'abstract/Alert/Alert.svelte';
 	import { ALERT_WAIT_TIME } from 'constants/constants';
-	// import { GET } from 'network/server';
 	import { readFileAsUint8Array } from 'models/models';
 	import { sendPdf } from 'network/network';
 

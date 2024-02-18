@@ -6,7 +6,7 @@ export async function GET(request: any) {
 		const queryParams = new URLSearchParams(request.query).toString();
 
 		// Make a GET request to backend server with query parameters
-		const response = await fetch(`http://localhost:5000/status?hash=${queryParams}`);
+		const response = await fetch(`http://localhost:5000/status?${queryParams}`);
 
 		if (!response.ok) {
 			throw new Error('Failed to fetch data from backend');
@@ -36,7 +36,8 @@ export async function POST(request: any) {
 		// Extract request body
 		const formData = new FormData();
 
-		formData.append('file', request.files.file[0].buffer);
+		// Assuming 'file' is the key for the uploaded file
+		formData.append('file', request.files.file[0].buffer, { filename: 'filename.pdf' });
 
 		// Make a POST request to backend server
 		const response = await fetch('http://localhost:5000/submit', {
