@@ -6,7 +6,7 @@ export async function GET(request: any) {
 		const queryParams = new URLSearchParams(request.query).toString();
 
 		// Make a GET request to backend server with query parameters
-		const response = await fetch(`http://localhost:5000/status?${queryParams}`);
+		const response = await fetch(`http://localhost:5000/status?hash=${queryParams}`);
 
 		if (!response.ok) {
 			throw new Error('Failed to fetch data from backend');
