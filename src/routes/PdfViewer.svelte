@@ -1,132 +1,127 @@
 <script lang="ts">
-    import * as pdfjsLib from 'pdfjs-dist';
-    import { onMount } from 'svelte';
-	pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf-worker.mjs";
-    export let pdf: Uint8Array;
-    let canvas: HTMLCanvasElement;
-    let ctx: CanvasRenderingContext2D | null = null;
-    let cropStartX: number;
-    let cropStartY: number;
-    let cropEndX: number;
-    let cropEndY: number;
-    let cropping: boolean = false;
+	import * as pdfjsLib from 'pdfjs-dist';
+	import { onMount } from 'svelte';
+	import { PDF_JS_WORKER } from 'constants/constants';
 
-    async function renderPDF() {
-        if (!pdf || !canvas) {
-            console.error('PDF or canvas not available');
-            return;
-        }
+	pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_JS_WORKER;
 
-        try {
-            const loadingTask = pdfjsLib.getDocument({ data: pdf });
-            const pdfDoc = await loadingTask.promise;
-            const page = await pdfDoc.getPage(1); // Get the first page
+	export let pdf: Uint8Array;
+	let canvas: HTMLCanvasElement;
+	let ctx: CanvasRenderingContext2D | null = null;
+	let cropping: boolean = false;
+	let startX: number;
+	let startY: number;
+	let endX: number;
+	let endY: number;
 
-            // Get the width and height of the PDF page
-            const { width, height } = page.getViewport({ scale: 1 });
+	async function renderPDF() {
+		if (!pdf || !canvas || !ctx) {
+			console.error('PDF, canvas, or context not available');
+			return;
+		}
 
-            // Set the canvas dimensions
-            canvas.width = width;
-            canvas.height = height;
+		try {
+			const loadingTask = pdfjsLib.getDocument({ data: pdf });
+			const pdfDoc = await loadingTask.promise;
 
-            // Render the PDF page onto the canvas
-            const renderContext = {
-                canvasContext: ctx!,
-                viewport: page.getViewport({ scale: 1 })
-            };
-            await page.render(renderContext).promise;
+			for (let i = 1; i <= pdfDoc.numPages; i++) {
+				const page = await pdfDoc.getPage(i);
+				const { width, height } = page.getViewport({ scale: 1 });
 
-        } catch (error) {
-            console.error('Error rendering PDF:', error);
-        }
-    }
+				canvas.width = width;
+				canvas.height = height;
 
-    async function cropPage(page: any) {
-        if (!cropping) return;
+				await page.render({
+					canvasContext: ctx,
+					viewport: page.getViewport({ scale: 1 })
+				}).promise;
+			}
+		} catch (error) {
+			console.error('Error rendering PDF:', error);
+		}
+	}
 
-        // Calculate crop box coordinates
-        const minX = Math.min(cropStartX, cropEndX);
-        const minY = Math.min(cropStartY, cropEndY);
-        const width = Math.abs(cropEndX - cropStartX);
-        const height = Math.abs(cropEndY - cropStartY);
+	function handleMouseDown(event: MouseEvent) {
+		startX = event.offsetX;
+		startY = event.offsetY;
+		cropping = true;
+	}
 
-        // Set the crop box on the page
-        page.setCropBox(minX, minY, width, height);
-    }
+	function handleMouseMove(event: MouseEvent) {
+		if (!cropping || !ctx) return;
 
-    const handleMouseDown = (event: MouseEvent) => {
-        if (!cropping) {
-            cropping = true;
-            cropStartX = event.offsetX;
-            cropStartY = event.offsetY;
-        }
-    };
+		endX = event.offsetX;
+		endY = event.offsetY;
 
-    const handleMouseMove = (event: MouseEvent) => {
-        if (cropping && ctx) {
-            cropEndX = event.offsetX;
-            cropEndY = event.offsetY;
-            drawSelectionRect();
-        }
-    };
+		drawSelectionRect();
+	}
 
-    const handleMouseUp = () => {
-        if (cropping) {
-            cropping = false;
-            crop();
-        }
-    };
+	function handleMouseUp() {
+		if (cropping) {
+			cropping = false;
+			crop();
+		}
+	}
 
-    const drawSelectionRect = () => {
-        if (!ctx) return;
+	function drawSelectionRect() {
+		if (!ctx) return;
 
-        const width = cropEndX - cropStartX;
-        const height = cropEndY - cropStartY;
+		const width = endX - startX;
+		const height = endY - startY;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = 'red';
-        ctx.strokeRect(cropStartX, cropStartY, width, height);
-    };
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.strokeStyle = 'red';
+		ctx.strokeRect(startX, startY, width, height);
+	}
 
-    async function crop() {
-        if (!pdf || !canvas) {
-            console.error('PDF or canvas not available');
-            return;
-        }
+	async function crop() {
+		if (!pdf || !canvas || !ctx) {
+			console.error('PDF, canvas, or context not available');
+			return;
+		}
 
-        try {
-            const loadingTask = pdfjsLib.getDocument({ data: pdf });
-            const pdfDoc = await loadingTask.promise;
-            const page = await pdfDoc.getPage(1); // Get the first page
+		try {
+			const loadingTask = pdfjsLib.getDocument({ data: pdf });
+			const pdfDoc = await loadingTask.promise;
 
-            // Crop the page based on the selected area
-            await cropPage(page);
+			for (let i = 1; i <= pdfDoc.numPages; i++) {
+				const page = await pdfDoc.getPage(i);
 
-            // Render the cropped PDF page onto the canvas
-            await renderPDF();
-        } catch (error) {
-            console.error('Error cropping PDF:', error);
-        }
-    }
+				// Crop the page
+				const minX = Math.min(startX, endX);
+				const minY = Math.min(startY, endY);
+				const width = Math.abs(endX - startX);
+				const height = Math.abs(endY - startY);
+				page.setCropBox(minX, minY, width, height);
 
-    onMount(async () => {
-        if (!canvas) return;
-        ctx = canvas.getContext('2d');
-        await renderPDF();
-    });
+				// Clear canvas and re-render cropped page
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				await renderPDF();
+			}
+		} catch (error) {
+			console.error('Error cropping PDF:', error);
+		}
+	}
+
+	onMount(async () => {
+		if (!canvas) return;
+
+		ctx = canvas.getContext('2d');
+		await renderPDF();
+	});
 </script>
 
 <div>
-    <canvas
-        bind:this={canvas}
-        on:mousedown={handleMouseDown}
-        on:mousemove={handleMouseMove}
-        on:mouseup={handleMouseUp}
-    ></canvas>
+	<canvas
+		bind:this={canvas}
+		on:mousedown={handleMouseDown}
+		on:mousemove={handleMouseMove}
+		on:mouseup={handleMouseUp}
+	></canvas>
 </div>
 
 <style lang="postcss">
-    canvas {
-        border: 1px solid #000;
-    }
+	canvas {
+		border: 1px solid #000;
+	}
 </style>
