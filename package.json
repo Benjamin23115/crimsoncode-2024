@@ -10,8 +10,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write .",
-		"move-pdf-js": "node move-pdf-js.js"
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
 		"@skeletonlabs/skeleton": "2.8.0",
@@ -34,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"pdf-lib": "^1.17.1"
+		"pdf.js": "^0.1.0",
+		"pdfjs-dist": "^4.0.379"
 	}
 }

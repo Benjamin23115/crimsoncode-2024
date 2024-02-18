@@ -17,5 +17,6 @@ export default defineConfig({
 		port: 3000,
 		open: true
 	},
-	publicDir: path.resolve('./public')
+	publicDir: path.resolve('./public'),
+	optimizeDeps: { esbuildOptions: { target: 'esnext' } }
 });
