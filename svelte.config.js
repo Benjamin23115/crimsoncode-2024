@@ -16,6 +16,10 @@ const config = {
 		adapter: adapter(),
 		files: {
 			assets: path.resolve('./public')
+		},
+		alias: {
+			constants: 'src/constants',
+			routes: 'src/routes'
 		}
 	}
 };

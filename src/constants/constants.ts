@@ -1,0 +1,1 @@
+export const ERROR_WAIT_TIME = 10000;
