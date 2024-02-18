@@ -22,13 +22,14 @@ async function copyFiles() {
 }
 
 function getCommandForPlatform() {
-	if (process.platform === 'win32') {
-		return `copy "${source}" "${destination}" /y`;
-	} else if (process.platform === 'darwin') {
-		return `cp -r "${source}" "${destination}"`;
-	} else {
-		return `cp -r "${source}" "${destination}"`;
-	}
+    if (process.platform === 'win32') {
+        return `xcopy "${source}" "${destination}" /E /Y`;
+    } else if (process.platform === 'darwin') {
+        return `cp -r "${source}" "${destination}"`;
+    } else {
+        return `cp -r "${source}" "${destination}"`;
+    }
 }
+
 
 copyFiles();
