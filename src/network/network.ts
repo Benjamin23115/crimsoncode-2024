@@ -1,32 +1,33 @@
-import fetch from 'node-fetch';
+export const sendPdf = async (pdfFile: File): Promise<void> => {
+	let formData = new FormData();
+	formData.append('file', pdfFile);
 
-export async function GET(request: any) {
+	// const url = import.meta.env.VITE_URL; // Replace with your server endpoint
+	const url = 'http://localhost:5000/submit'; // Replace with your server endpoint
+
 	try {
-		// Extract query parameters from the request
-		const queryParams = new URLSearchParams(request.query).toString();
-
-		// Make a GET request to backend server with query parameters
-		const response = await fetch(`http://localhost:5000/status?${queryParams}`);
-
-		if (!response.ok) {
-			throw new Error('Failed to fetch data from backend');
-		}
-
-		const data = await response.json();
-
-		return {
-			status: 200,
-			body: {
-				data
-			}
-		};
+		const response = await fetch(url, {
+			method: 'POST',
+			body: formData,
+		});
+		console.log(response);
 	} catch (error) {
-		console.error('Error:', error);
-		return {
-			status: 500,
-			body: {
-				error: 'Internal Server Error'
-			}
-		};
+		console.error('Error with sending Pdf: ', error);
+	}
+};
+
+export async function pingUrl(url: string): Promise<void> {
+	const startTime = performance.now();
+	try {
+		const response = await fetch(url);
+		if (response.ok) {
+			const endTime = performance.now();
+			const pingTime = endTime - startTime;
+			console.log(`Ping to ${url} successful. Time: ${pingTime.toFixed(2)} ms`);
+		} else {
+			console.error(`Failed to ping ${url}. Status: ${response.status} ${response.statusText}`);
+		}
+	} catch (error) {
+		console.error(`Error pinging ${url}:`, error);
 	}
 }
