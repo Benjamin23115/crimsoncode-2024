@@ -49,7 +49,9 @@
 	<svelte:fragment slot="header">
 		<Header on:appThemeChange={handleAppThemeChange} {appTheme} />
 	</svelte:fragment>
-	<Page />
+	<svelte:fragment>
+		<Page />
+	</svelte:fragment>
 </AppShell>
 
 <style lang="postcss">
