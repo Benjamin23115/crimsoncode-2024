@@ -9,11 +9,20 @@
 	const appThemeChange = () => {
 		dispatch('appThemeChange');
 	};
+	const handleAppReload = () => {
+		window.location.reload();
+	};
 </script>
 
 <AppBar>
 	<svelte:fragment slot="lead">
-		<img alt="app-logo" src={appTheme === 'dark' ? './favicon-dark.png' : './favicon-light.png'} />
+		<button on:click={handleAppReload}>
+			<img
+				alt="app-logo"
+				src={appTheme === 'dark' ? './favicon-dark.png' : './favicon-light.png'}
+			/>
+		</button>
+
 		<div class="divider" />
 		<strong class="text-xl uppercase">{APPLICATION_NAME}</strong>
 	</svelte:fragment>
