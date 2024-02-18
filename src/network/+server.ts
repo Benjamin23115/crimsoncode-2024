@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function GET(request) {
+export async function GET(request: any) {
 	try {
 		// Extract query parameters from the request
 		const queryParams = new URLSearchParams(request.query).toString();
