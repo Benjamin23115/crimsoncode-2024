@@ -2,7 +2,7 @@
 
 ## Development
 
-install dependencies with `npm install` move pdf.js files to `/src/pdf-js` using `npm run move-pdf-js` then to start localDevelopment server run:
+install dependencies with `npm install` then to start localDevelopment server run:
 
 ```bash
 npm start
