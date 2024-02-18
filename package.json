@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"node-fetch": "^3.3.2",
 		"pdf.js": "^0.1.0",
 		"pdfjs-dist": "^4.0.379"
 	}
