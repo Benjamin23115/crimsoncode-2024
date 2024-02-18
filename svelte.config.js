@@ -19,7 +19,8 @@ const config = {
 			constants: 'src/constants',
 			routes: 'src/routes',
 			abstract: 'src/abstract',
-			models: 'src/models'
+			models: 'src/models',
+			network: 'src/network'
 		}
 	}
 };

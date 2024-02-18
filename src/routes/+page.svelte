@@ -4,6 +4,7 @@
 	import PdfViewer from 'routes/PdfViewer.svelte';
 	import { ALERT_WAIT_TIME, APPLICATION_NAME } from 'constants/constants';
 	import { readFileAsUint8Array } from 'models/models';
+	import { sendPdf, pingUrl } from 'network/network';
 
 	let invalidFileInput: boolean = false;
 	let validFileInput: boolean = false;
@@ -20,16 +21,17 @@
 				validFileInput = false;
 			}, ALERT_WAIT_TIME);
 			if (files[0]) {
-				try {
-					fileAsUInt8Array = await readFileAsUint8Array(files[0]);
-					validAlertCheck = true;
-				} catch (error) {
-					console.error('Error reading file:', error);
-					invalidFileInput = true;
-					setTimeout(() => {
-						invalidFileInput = false;
-					}, ALERT_WAIT_TIME);
-				}
+				sendPdf(files[0]);
+				// try {
+				// 	fileAsUInt8Array = await readFileAsUint8Array(files[0]);
+				// 	validAlertCheck = true;
+				// } catch (error) {
+				// 	console.error('Error reading file:', error);
+				// 	invalidFileInput = true;
+				// 	setTimeout(() => {
+				// 		invalidFileInput = false;
+				// 	}, ALERT_WAIT_TIME);
+				// }
 			} else {
 				invalidFileInput = true;
 				setTimeout(() => {
@@ -38,6 +40,7 @@
 			}
 		}
 	};
+	$: pingUrl('http://localhost:5000/submit');
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center flex-col gap-8">
@@ -64,9 +67,9 @@
 			icon={'done'}
 		/>
 	{/if}
-	{#if !validFileInput && validAlertCheck}
+	<!-- {#if !validFileInput && validAlertCheck}
 		<PdfViewer pdf={fileAsUInt8Array} />
-	{/if}
+	{/if} -->
 </div>
 
 <style lang="postcss">
