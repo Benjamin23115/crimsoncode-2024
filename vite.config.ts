@@ -18,5 +18,5 @@ export default defineConfig({
 		open: true
 	},
 	publicDir: path.resolve('./public'),
-	optimizeDeps: { esbuildOptions: { target: 'esnext' } }
+	optimizeDeps: { esbuildOptions: { target: 'esnext' } },
 });

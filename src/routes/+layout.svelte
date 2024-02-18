@@ -3,13 +3,14 @@
 	import { writable } from 'svelte/store';
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import '../app.postcss';
-	import { APPLICATION_NAME } from 'constants/constants';
 	import Header from 'abstract/Header/Header.svelte';
 	import Page from './+page.svelte';
 
 	let appTheme: 'light' | 'dark' = 'dark';
 	let favicon = writable('favicon-dark.png');
 	let hasComponentMounted: boolean = false;
+	let appName = import.meta.env.VITE_APPLICATION_NAME;
+
 
 	const changeFavicon = () => {
 		if (appTheme === 'light') {
@@ -39,7 +40,7 @@
 	}
 
 	onMount(() => {
-		document.title = APPLICATION_NAME;
+		document.title = appName;
 		changeFavicon();
 		hasComponentMounted = true;
 	});
@@ -47,10 +48,10 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<Header on:appThemeChange={handleAppThemeChange} {appTheme} />
+		<Header on:appThemeChange={handleAppThemeChange} {appTheme} {appName}/>
 	</svelte:fragment>
 	<svelte:fragment>
-		<Page />
+		<Page {appName}/>
 	</svelte:fragment>
 </AppShell>
 

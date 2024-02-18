@@ -11,7 +11,9 @@ const config = {
 
 	kit: {
 		// Pass the adapter configuration directly to the adapter property
-		adapter: adapter(),
+		adapter: adapter({
+			out: 'build'
+		}),
 		files: {
 			assets: path.resolve('./public')
 		},

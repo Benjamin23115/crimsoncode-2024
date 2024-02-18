@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { AppBar, LightSwitch } from '@skeletonlabs/skeleton';
-	import { APPLICATION_NAME } from 'constants/constants';
 
 	export let appTheme: 'light' | 'dark' = 'dark';
+	export let appName: string;
 	const dispatch = createEventDispatcher();
 
 	const appThemeChange = () => {
@@ -24,7 +24,7 @@
 		</button>
 
 		<div class="divider" />
-		<strong class="text-xl uppercase">{APPLICATION_NAME}</strong>
+		<strong class="text-xl uppercase">{appName}</strong>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<LightSwitch rounded="rounded-2xl" height="h-8" width="w-16" on:click={appThemeChange} />
