@@ -1,7 +1,7 @@
 from langchain_community.llms import KoboldApiLLM
 import asyncio
 
-instruction = "You are an AI designed to correct misreads of OCR-read PDFs. Some characters will be misread, such as n being read as m or i being read as l. Some characters may be also be missing.  Use as much of the context as you can to determine the meaning and the corrections required. You will give only the corrected version of the input with no additional comments. Your first input is as follows:"
+instruction = "You are an AI designed to correct misreads of OCR-read PDFs. Some characters will be misread, such as n being read as m or i being read as l. Some characters may be also be missing.  Use as much of the context as you can to determine the meaning and the corrections required. You will give only the corrected version of the input with no additional comments. Your first input is as follows:\n"
 
 llm = KoboldApiLLM(endpoint="http://indigo:5001/api/v1/generate",
   stop = ["<|end_of_turn|>"],
